@@ -1,0 +1,82 @@
+%%{init: {'theme': 'light', 'themeVariables': { 'primaryColor': '#a371f7', 'primaryTextColor': '#c9d1d9', 'primaryBorderColor': '#30363d', 'lineColor': '#58a6ff', 'secondaryColor': '#161b22', 'tertiaryColor': '#21262d'}}}%%
+
+flowchart TB
+    subgraph TRIGGER["🔴 TRIGGER LAYER"]
+        T1[/"📅 Calendar Event<br/><code>merger_meeting_tokyo</code>"/]
+        T2[/"✈️ Flight Disruption<br/><code>cancellation_event</code>"/]
+    end
+
+    subgraph EDGE["🔵 EDGE LAYER <i>local_device</i>"]
+        E1["🚨 Crisis Detector<br/><code>main.py</code>"]
+        E2["🎭 Inner Monologue<br/><code>reasoning_trace</code>"]
+    end
+
+    subgraph SOVEREIGN["🟣 SOVEREIGN CLOUD"]
+        direction TB
+        
+        subgraph ORCHESTRATOR["Orchestrator Layer"]
+            O1["🧠 Claude via MCP<br/><code>anthropic_sdk</code>"]
+        end
+
+        subgraph REASONING["Reasoning Engine"]
+            R1["🔍 BFS Airport Search"]
+            R2["🚄 Intermodal Analysis"]
+            R3["⚖️ Decision Matrix<br/><code>time > cost > comfort</code>"]
+            KB["📊 Knowledge Base<br/><code>dict + pydantic</code>"]
+        end
+
+        subgraph PRIVACY["Privacy Shield Layer"]
+            P1["🛡️ Data Redaction Proxy<br/><code>privacy_shield.py</code>"]
+            P2["🔒 Identity Hasher<br/><code>hash_identity()</code>"]
+        end
+
+        subgraph EXECUTOR["Action Executor"]
+            AE["⚙️ Booking Engine<br/><code>HITL_optional</code>"]
+        end
+    end
+
+    subgraph EXTERNAL["⚪ EXTERNAL APIs <i>untrusted</i>"]
+        X1["✈️ Mock GDS<br/><code>Amadeus/Sabre</code>"]
+        X2["🚄 Rail API<br/><code>JR Shinkansen</code>"]
+        X3["🚗 Ground Transport"]
+        X4["💳 Payment Gateway<br/><code>PCI-DSS tokenized</code>"]
+    end
+
+    %% Trigger flows
+    T1 & T2 --> E1
+
+    %% Edge to Sovereign
+    E1 -->|"crisis_payload"| O1
+    E2 -.->|"trace_log"| O1
+
+    %% Orchestrator to Reasoning
+    O1 --> R1
+    R1 --> R2
+    R2 --> R3
+    KB -.-> R1 & R2 & R3
+
+    %% Reasoning to Privacy
+    R3 --> P1
+    P1 --> P2
+
+    %% Privacy to Executor
+    P2 -->|"redacted_request"| AE
+
+    %% Executor to External (through privacy)
+    AE ==>|"Corporate Ref #441"| X1
+    AE ==>|"Corporate Ref #441"| X2
+    AE ==>|"Corporate Ref #441"| X3
+    AE ==>|"tokenized_payment"| X4
+
+    %% Styling - no background fills
+    classDef trigger fill:none,stroke:#f85149,stroke-width:2px
+    classDef edge fill:none,stroke:#58a6ff,stroke-width:2px
+    classDef sovereign fill:none,stroke:#a371f7,stroke-width:2px
+    classDef external fill:none,stroke:#8b949e,stroke-width:1px,stroke-dasharray: 5 5
+    classDef privacy fill:none,stroke:#7ee787,stroke-width:2px
+
+    class T1,T2 trigger
+    class E1,E2 edge
+    class O1,R1,R2,R3,KB,AE sovereign
+    class P1,P2 privacy
+    class X1,X2,X3,X4 external

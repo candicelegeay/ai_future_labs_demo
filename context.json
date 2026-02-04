@@ -1,0 +1,37 @@
+{
+  "mission_name": "Operation Sakura",
+  "classification": "SOVEREIGN / TOP SECRET",
+  "objective": "Merger & Acquisition Signing - Semiconductor Sector",
+  "timeline": {
+    "negotiation_start": "2025-08-01",
+    "negotiation_duration_months": 6,
+    "signing_deadline": "2026-02-05T09:00:00+09:00"
+  },
+  "location": {
+    "city": "Tokyo",
+    "country": "Japan",
+    "venue": "Nippon Semi HQ - Executive Floor"
+  },
+  "stakeholders": {
+    "traveler": {
+      "role": "Global Tech CEO",
+      "id_hash": "SHA256:ceo_7b8a...f2c1",
+      "clearance": "SOVEREIGN"
+    },
+    "counterpart": {
+      "name": "Tanaka-san",
+      "role": "Nippon Semi Chairman",
+      "cultural_note": "Physical presence mandatory for trust validation"
+    }
+  },
+  "risk_assessment": {
+    "absence_impact": "CRITICAL - Immediate termination of negotiations",
+    "video_conference_viable": false,
+    "reason": "Japanese business culture requires physical presence for high-stakes signings"
+  },
+  "travel_preferences": {
+    "priority_order": ["TIME", "RELIABILITY", "COMFORT"],
+    "backup_airports": ["KIX", "NGO", "ITM"],
+    "rail_preference": "Shinkansen Green Car"
+  }
+}
