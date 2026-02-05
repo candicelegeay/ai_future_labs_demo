@@ -38,13 +38,6 @@ st.markdown("""
         color: #666;
         margin-top: 0;
     }
-    .stage-box {
-        background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
-        border-left: 4px solid #2d5a87;
-        padding: 1rem;
-        margin: 0.5rem 0;
-        border-radius: 0 8px 8px 0;
-    }
     .concept-badge {
         background: #2d5a87;
         color: white;
@@ -52,99 +45,104 @@ st.markdown("""
         border-radius: 12px;
         font-size: 0.8rem;
         font-weight: bold;
-    }
-    .success-box {
-        background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
-        border-left: 4px solid #28a745;
-        padding: 1rem;
-        border-radius: 0 8px 8px 0;
-    }
-    .alert-box {
-        background: linear-gradient(135deg, #fff3cd 0%, #ffeeba 100%);
-        border-left: 4px solid #ffc107;
-        padding: 1rem;
-        border-radius: 0 8px 8px 0;
-    }
-    .privacy-box {
-        background: linear-gradient(135deg, #e7e9fd 0%, #d4d7f9 100%);
-        border-left: 4px solid #6c63ff;
-        padding: 1rem;
-        border-radius: 0 8px 8px 0;
-    }
-    .code-block {
-        background: #1e1e1e;
-        color: #d4d4d4;
-        padding: 1rem;
-        border-radius: 8px;
-        font-family: 'Fira Code', monospace;
-        font-size: 0.85rem;
-        overflow-x: auto;
-    }
-    .metric-card {
-        background: white;
-        padding: 1rem;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        text-align: center;
-    }
-    .timeline-dot {
-        width: 12px;
-        height: 12px;
-        background: #2d5a87;
-        border-radius: 50%;
         display: inline-block;
-        margin-right: 8px;
     }
+
+    /* ---- incoming notification banner ---- */
+    @keyframes slideDown {
+        0%   { transform: translateY(-100%); opacity: 0; }
+        100% { transform: translateY(0);     opacity: 1; }
+    }
+    .notif-banner {
+        animation: slideDown 0.5s ease-out;
+        background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        color: white;
+        padding: 1.2rem 1.5rem;
+        border-radius: 12px;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 4px 20px rgba(220,53,69,0.4);
+    }
+    .notif-banner h3 { margin: 0 0 0.4rem 0; color: white; }
+    .notif-banner p  { margin: 0; opacity: 0.95; }
+
+    /* ---- stage card (rendered after completion) ---- */
+    @keyframes fadeSlideIn {
+        0%   { transform: translateY(12px); opacity: 0; }
+        100% { transform: translateY(0);    opacity: 1; }
+    }
+    .stage-card {
+        animation: fadeSlideIn 0.4s ease-out;
+        border-left: 4px solid var(--accent, #2d5a87);
+        background: #f8f9fb;
+        padding: 1rem 1.2rem;
+        border-radius: 0 10px 10px 0;
+        margin-bottom: 0.8rem;
+    }
+    .stage-card .stage-title {
+        font-weight: 700;
+        font-size: 1.05rem;
+        margin-bottom: 0.3rem;
+    }
+    .stage-card code {
+        display: block;
+        font-size: 0.84rem;
+        line-height: 1.6;
+    }
+    .stage-card .insight {
+        margin-top: 0.6rem;
+        padding: 0.5rem 0.8rem;
+        background: #e8f0fe;
+        border-radius: 6px;
+        font-size: 0.88rem;
+    }
+
+    /* ---- final summary section ---- */
+    @keyframes popIn {
+        0%   { transform: scale(0.92); opacity: 0; }
+        100% { transform: scale(1);    opacity: 1; }
+    }
+    .final-summary { animation: popIn 0.5s ease-out; }
+
+    .route-step {
+        text-align: center;
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+    }
+    .route-step .icon  { font-size: 2rem; }
+    .route-step .label { font-weight: bold; margin: 0.5rem 0; }
+    .route-step .time  { color: #666; font-size: 0.9rem; }
 </style>
 """, unsafe_allow_html=True)
 
 # ============================================================
-# SIDEBAR - CONFIGURATION
+# SIDEBAR - CONFIGURATION  (concepts list removed)
 # ============================================================
 with st.sidebar:
-    st.image("https://img.icons8.com/fluency/96/shield.png", width=80)
     st.markdown("## ⚙️ Configuration")
-    
-    use_llm = st.checkbox("Use Local LLM (Llama 3.1)", value=False, 
+
+    use_llm = st.checkbox("Use Local LLM (Llama 3.1)", value=False,
                           help="Requires Ollama with llama3.1:8b model")
-    
+
     animation_speed = st.slider("Animation Speed", 0.5, 3.0, 1.5, 0.5,
                                 help="Delay between stages (seconds)")
-    
-    st.markdown("---")
-    st.markdown("### 📚 AI Futures Lab Concepts")
-    
-    concepts = [
-        ("🔲", "Edge AI", "Processing at the source"),
-        ("📋", "Contextual AI", "Understanding the situation"),
-        ("🔗", "Causal AI", "Cause-effect reasoning"),
-        ("🧮", "True Reasoning", "Logical deduction"),
-        ("🛡️", "Sovereign AI", "Data sovereignty"),
-        ("🔒", "Privacy Preserving", "Anonymous queries"),
-        ("🤖", "Agentic AI", "Autonomous action"),
-        ("📚", "Continuous Learning", "Self-improvement"),
-    ]
-    
-    for icon, name, desc in concepts:
-        st.markdown(f"{icon} **{name}**")
-        st.caption(desc)
-    
+
     st.markdown("---")
     st.markdown("### 📊 Demo Statistics")
-    if 'run_count' not in st.session_state:
+    if "run_count" not in st.session_state:
         st.session_state.run_count = 0
     st.metric("Total Runs", st.session_state.run_count)
 
 # ============================================================
-# MAIN CONTENT
+# MAIN HEADER
 # ============================================================
-
-# Header
 col1, col2 = st.columns([3, 1])
 with col1:
-    st.markdown('<p class="main-header">🛡️ Sovereign Executive Agent</p>', unsafe_allow_html=True)
-    st.markdown('<p class="sub-header">An 8-Stage Demonstration of Next-Generation AI Capabilities</p>', unsafe_allow_html=True)
-
+    st.markdown('<p class="main-header">🛡️ Sovereign Executive Agent</p>',
+                unsafe_allow_html=True)
+    st.markdown('<p class="sub-header">'
+                'An 8-Stage Demonstration of Next-Generation AI Capabilities'
+                '</p>', unsafe_allow_html=True)
 with col2:
     st.markdown("")
     st.markdown("")
@@ -158,9 +156,8 @@ st.markdown("---")
 # SCENARIO INTRODUCTION
 # ============================================================
 with st.expander("📖 THE SCENARIO", expanded=True):
-    col1, col2, col3 = st.columns(3)
-    
-    with col1:
+    c1, c2, c3 = st.columns(3)
+    with c1:
         st.markdown("### 🎯 The Mission")
         st.markdown("""
         **Operation Sakura**
@@ -169,18 +166,16 @@ with st.expander("📖 THE SCENARIO", expanded=True):
         - $2.4B semiconductor deal
         - Tokyo, 09:00 AM
         """)
-    
-    with col2:
+    with c2:
         st.markdown("### ⚠️ The Crisis")
         st.markdown("""
-        **23:00 - Charles de Gaulle Airport**
+        **23:00 — Charles de Gaulle Airport**
         - Flight AF276 CANCELLED
         - Weather conditions
         - CEO stranded in Paris
         - No direct Tokyo flights available
         """)
-    
-    with col3:
+    with c3:
         st.markdown("### 🔒 The Constraints")
         st.markdown("""
         **Sovereign Requirements**
@@ -193,7 +188,7 @@ with st.expander("📖 THE SCENARIO", expanded=True):
 st.markdown("---")
 
 # ============================================================
-# MAIN DEMO EXECUTION
+# LAUNCH AREA
 # ============================================================
 incident_input = st.text_input(
     "📝 Incident Description",
@@ -201,163 +196,232 @@ incident_input = st.text_input(
     help="Modify the incident to test different scenarios"
 )
 
-col1, col2, col3 = st.columns([1, 2, 1])
-with col2:
-    run_button = st.button("🚀 LAUNCH SOVEREIGN RECOVERY PROTOCOL", 
-                           type="primary", 
+col_l, col_c, col_r = st.columns([1, 2, 1])
+with col_c:
+    run_button = st.button("🚀 LAUNCH SOVEREIGN RECOVERY PROTOCOL",
+                           type="primary",
                            use_container_width=True)
 
+# ============================================================
+# DEMO EXECUTION  —  sequential, reveal-one-at-a-time
+# ============================================================
 if run_button:
-    st.session_state.run_count = st.session_state.get('run_count', 0) + 1
-    
-    # Initialize agent
+    st.session_state.run_count = st.session_state.get("run_count", 0) + 1
+
+    # ----------------------------------------------------------
+    # 0. Initialize agent (hidden spinner)
+    # ----------------------------------------------------------
     with st.spinner("Initializing Sovereign Agent..."):
         try:
             agent = SovereignExecutiveAgent(use_llm=use_llm)
         except Exception as e:
             st.error(f"Error initializing agent: {e}")
             st.stop()
-    
-    # Progress tracking
-    progress_bar = st.progress(0)
-    status_text = st.empty()
-    
-    # Run the agent
-    status_text.text("🔄 Executing recovery protocol...")
-    
+
+    # ----------------------------------------------------------
+    # 1. NOTIFICATION POP-IN  🔔
+    # ----------------------------------------------------------
+    notif_slot = st.empty()
+    notif_slot.markdown("""
+    <div class="notif-banner">
+        <h3>🔔 &nbsp;INCOMING ALERT — Secure Executive Device</h3>
+        <p>
+            <strong>23:00</strong> &nbsp;|&nbsp;
+            Flight AF276 Paris → Tokyo &nbsp;|&nbsp;
+            <strong>CANCELLED</strong> — severe weather
+        </p>
+        <p style="margin-top:0.5rem;font-size:0.85rem;opacity:0.85;">
+            ⚡ Edge AI intercepted on local device &nbsp;·&nbsp;
+            No data sent to cloud
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    time.sleep(animation_speed + 0.5)  # let the user read the alert
+
+    # ----------------------------------------------------------
+    # 2. Run the full agent graph
+    # ----------------------------------------------------------
     try:
         result = agent.run(incident_input)
     except Exception as e:
         st.error(f"Execution error: {e}")
         st.stop()
-    
-    # Display results stage by stage
+
+    # ----------------------------------------------------------
+    # 3. Progress bar + status line
+    # ----------------------------------------------------------
     st.markdown("## 📊 Execution Timeline")
-    
+    progress_bar = st.progress(0)
+    status_text  = st.empty()
+
     stage_icons = {
-        1: "📱", 2: "📋", 3: "🔗", 4: "🧮", 
+        1: "📱", 2: "📋", 3: "🔗", 4: "🧮",
         5: "🛡️", 6: "🤖", 7: "👤", 8: "📚"
     }
-    
-    stage_colors = {
+    stage_accents = {
         1: "#3498db", 2: "#9b59b6", 3: "#e74c3c", 4: "#f39c12",
         5: "#6c63ff", 6: "#27ae60", 7: "#16a085", 8: "#8e44ad"
     }
-    
+
+    total = len(result["stage_logs"])
+
+    # Pre-allocate empty slots — nothing is visible yet
+    stage_slots = [st.empty() for _ in range(total)]
+
+    # Placeholder for everything that comes AFTER the stages
+    final_slot = st.empty()
+
+    # ----------------------------------------------------------
+    # 4. Reveal stages one-by-one
+    # ----------------------------------------------------------
     for i, log in enumerate(result["stage_logs"]):
-        progress_bar.progress((i + 1) / len(result["stage_logs"]))
-        status_text.text(f"Stage {log['stage']}: {log['name']}")
-        
-        # Create expandable section for each stage
-        with st.expander(
-            f"{stage_icons.get(log['stage'], '📌')} STAGE {log['stage']}: {log['name']} — {log['timestamp']}", 
-            expanded=(i < 3)  # First 3 stages expanded by default
-        ):
-            # Concept badge
-            st.markdown(f"""
-            <span class="concept-badge">💡 {log['concept']}</span>
-            """, unsafe_allow_html=True)
-            
-            st.markdown("")
-            
-            # Actions display
-            for action in log["actions"]:
-                if action.strip():  # Skip empty lines
-                    st.markdown(f"`{action}`")
-            
-            # Special content for certain stages
-            if log['stage'] == 4 and 'llm_reasoning' in log:
-                st.markdown("#### 🧠 LLM Reasoning Output")
-                st.code(log['llm_reasoning'], language="text")
-            
-            if log['stage'] == 7 and 'executive_message' in log:
-                st.markdown("#### 📨 Executive Notification")
-                st.code(log['executive_message'], language="text")
-            
-            # Key insight
-            st.markdown("---")
-            st.info(f"💡 **Key Insight:** {log['key_insight']}")
-        
+        progress_bar.progress((i + 1) / total)
+        status_text.text(f"⏳  Stage {log['stage']}/{total}: {log['name']}")
+
+        icon   = stage_icons.get(log["stage"], "📌")
+        accent = stage_accents.get(log["stage"], "#2d5a87")
+
+        # Build action lines as individual <div> rows (no <pre> to break)
+        def _esc(txt):
+            return txt.replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
+
+        action_html = "".join(
+            f'<div style="font-family:monospace;font-size:0.84rem;'
+            f'line-height:1.6;white-space:pre-wrap">{_esc(a)}</div>'
+            for a in log["actions"] if a.strip()
+        )
+
+        # Optional extra blocks
+        extra_html = ""
+        if log["stage"] == 4 and "llm_reasoning" in log:
+            escaped = _esc(log["llm_reasoning"])
+            extra_html += (
+                '<details style="margin-top:0.6rem">'
+                '<summary><strong>🧠 LLM Reasoning Output</strong></summary>'
+                '<div style="background:#1e1e1e;color:#d4d4d4;padding:0.8rem;'
+                'border-radius:6px;font-family:monospace;font-size:0.82rem;'
+                f'overflow-x:auto;margin-top:0.4rem;white-space:pre-wrap">{escaped}</div>'
+                '</details>'
+            )
+
+        if log["stage"] == 7 and "executive_message" in log:
+            escaped = _esc(log["executive_message"])
+            extra_html += (
+                '<details open style="margin-top:0.6rem">'
+                '<summary><strong>📨 Executive Notification</strong></summary>'
+                '<div style="background:#1e1e1e;color:#d4d4d4;padding:0.8rem;'
+                'border-radius:6px;font-family:monospace;font-size:0.82rem;'
+                f'overflow-x:auto;margin-top:0.4rem;white-space:pre-wrap">{escaped}</div>'
+                '</details>'
+            )
+
+        # Assemble the complete card — no <pre> tags, only <div>s
+        card_html = (
+            f'<div class="stage-card" style="--accent:{accent}">'
+            f'  <div class="stage-title">'
+            f'    {icon} STAGE {log["stage"]}: {_esc(log["name"])}'
+            f'    <span style="float:right;font-size:0.82rem;color:#888">'
+            f'      {_esc(log["timestamp"])}'
+            f'    </span>'
+            f'  </div>'
+            f'  <span class="concept-badge">💡 {_esc(log["concept"])}</span>'
+            f'  <div style="margin-top:0.6rem">{action_html}</div>'
+            f'  {extra_html}'
+            f'  <div class="insight">💡 <em>{_esc(log["key_insight"])}</em></div>'
+            f'</div>'
+        )
+
+        # Render into the pre-allocated slot → appears with animation
+        stage_slots[i].markdown(card_html, unsafe_allow_html=True)
+
         time.sleep(animation_speed)
-    
+
+    # ----------------------------------------------------------
+    # 5. Clear notification banner & finalise progress
+    # ----------------------------------------------------------
+    notif_slot.empty()
     progress_bar.progress(1.0)
     status_text.text("✅ Recovery protocol complete!")
-    
-    # ============================================================
-    # FINAL SUMMARY
-    # ============================================================
-    st.markdown("---")
-    st.markdown("## ✅ MISSION RECOVERY COMPLETE")
-    
-    final = result.get("final_solution", {})
-    
-    col1, col2, col3, col4 = st.columns(4)
-    
-    with col1:
-        st.metric("Status", "SECURED", delta="SUCCESS")
-    with col2:
-        st.metric("ETA Tokyo", final.get("timeline", {}).get("tokyo_arrival", "08:15"))
-    with col3:
-        st.metric("Buffer Time", final.get("buffer_time", "20 min"))
-    with col4:
-        st.metric("Privacy", "PROTECTED", delta="SOVEREIGN")
-    
-    # Route visualization
-    st.markdown("### 🗺️ Recovery Route")
-    
-    route_cols = st.columns(5)
-    route_steps = [
-        ("🛫", "Paris CDG", "01:20"),
-        ("✈️", "Flight JL416", "12h 25m"),
-        ("🛬", "Osaka KIX", "19:45"),
-        ("🚄", "Nozomi 64", "2h 15m"),
-        ("🏢", "Tokyo Venue", "08:40")
-    ]
-    
-    for col, (icon, label, time_info) in zip(route_cols, route_steps):
-        with col:
-            st.markdown(f"""
-            <div style="text-align: center; padding: 1rem; background: #f8f9fa; border-radius: 8px;">
-                <div style="font-size: 2rem;">{icon}</div>
-                <div style="font-weight: bold; margin: 0.5rem 0;">{label}</div>
-                <div style="color: #666; font-size: 0.9rem;">{time_info}</div>
-            </div>
-            """, unsafe_allow_html=True)
-    
-    # Technical summary
-    with st.expander("🔧 Technical Summary", expanded=False):
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            st.markdown("#### Privacy Actions")
-            for action in result.get("privacy_actions", []):
-                st.json(action)
-        
-        with col2:
-            st.markdown("#### Bookings Secured")
-            for booking in result.get("bookings", []):
-                st.json(booking)
-    
-    # Full JSON output
-    with st.expander("📄 Full Execution Log (JSON)", expanded=False):
-        st.json(result)
+
+    # ----------------------------------------------------------
+    # 6. FINAL SUMMARY  (rendered only after all stages)
+    # ----------------------------------------------------------
+    with final_slot.container():
+        st.markdown("---")
+        st.markdown('<div class="final-summary">', unsafe_allow_html=True)
+        st.markdown("## ✅ MISSION RECOVERY COMPLETE")
+
+        final = result.get("final_solution", {})
+
+        m1, m2, m3, m4 = st.columns(4)
+        m1.metric("Status",      "SECURED",   delta="SUCCESS")
+        m2.metric("ETA Tokyo",
+                  final.get("timeline", {}).get("tokyo_arrival", "08:15"))
+        m3.metric("Buffer Time", final.get("buffer_time", "20 min"))
+        m4.metric("Privacy",     "PROTECTED", delta="SOVEREIGN")
+
+        # Route visualisation
+        st.markdown("### 🗺️ Recovery Route")
+        route_cols = st.columns(5)
+        route_steps = [
+            ("🛫", "Paris CDG",    "01:20"),
+            ("✈️", "Flight JL416", "12h 25m"),
+            ("🛬", "Osaka KIX",    "19:45"),
+            ("🚄", "Nozomi 64",    "2h 15m"),
+            ("🏢", "Tokyo Venue",  "08:40"),
+        ]
+        for col, (icon, label, t) in zip(route_cols, route_steps):
+            with col:
+                st.markdown(f"""
+                <div class="route-step">
+                    <div class="icon">{icon}</div>
+                    <div class="label">{label}</div>
+                    <div class="time">{t}</div>
+                </div>
+                """, unsafe_allow_html=True)
+
+        # Technical details (collapsed)
+        with st.expander("🔧 Technical Summary", expanded=False):
+            tc1, tc2 = st.columns(2)
+            with tc1:
+                st.markdown("#### Privacy Actions")
+                for action in result.get("privacy_actions", []):
+                    st.json(action)
+            with tc2:
+                st.markdown("#### Bookings Secured")
+                for booking in result.get("bookings", []):
+                    st.json(booking)
+
+        with st.expander("📄 Full Execution Log (JSON)", expanded=False):
+            st.json(result)
+
+        st.markdown('</div>', unsafe_allow_html=True)
 
 # ============================================================
-# FOOTER - CONCEPT SUMMARY
+# FOOTER
 # ============================================================
 st.markdown("---")
-st.markdown("### 🎓 AI Futures Lab - Concepts Demonstrated")
+st.markdown("### 🎓 AI Futures Lab — Concepts Demonstrated")
 
-concept_cols = st.columns(4)
-
-concepts_summary = [
-    ("🏛️ Responsible AI", "Sovereign AI, Privacy Preserving", "Trust & confidentiality by design"),
-    ("🔄 Systems Thinking", "Edge AI, Agentic AI", "Pervasive AI at scale"),
-    ("🎯 Real-World Alignment", "Causal AI, True Reasoning", "Understanding physics & consequences"),
-    ("📈 Continuous Improvement", "Continuous Learning", "Experience captured & applied"),
-]
-
-for col, (title, concepts, desc) in zip(concept_cols, concepts_summary):
+fc1, fc2, fc3, fc4 = st.columns(4)
+for col, (title, concepts, desc) in zip(
+    [fc1, fc2, fc3, fc4],
+    [
+        ("🏛️ Responsible AI",
+         "Sovereign AI · Privacy Preserving",
+         "Trust & confidentiality by design"),
+        ("🔄 Systems Thinking",
+         "Edge AI · Agentic AI",
+         "Pervasive AI at scale"),
+        ("🎯 Real-World Alignment",
+         "Causal AI · True Reasoning",
+         "Understanding physics & consequences"),
+        ("📈 Continuous Improvement",
+         "Continuous Learning",
+         "Experience captured & applied"),
+    ],
+):
     with col:
         st.markdown(f"**{title}**")
         st.caption(concepts)
